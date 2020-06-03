@@ -24,7 +24,17 @@ def detect_text(path):
     print("Texts:")
 
     units = pd.DataFrame(
-        columns=["word", "upper_left", "upper_right", "bottom_right", "bottom_left",]
+        columns=[
+            "word",
+            "upper_left_x",
+            "upper_right_x",
+            "bottom_right_x",
+            "bottom_left_x",
+            "upper_left_y",
+            "upper_right_y",
+            "bottom_right_y",
+            "bottom_left_y",
+        ]
     )
 
     for i, text in enumerate(texts):
@@ -38,18 +48,14 @@ def detect_text(path):
         if i > 0:
             units.loc[i] = [
                 text.description,
-                "({},{})".format(
-                    text.bounding_poly.vertices[0].x, text.bounding_poly.vertices[0].y,
-                ),
-                "({},{})".format(
-                    text.bounding_poly.vertices[1].x, text.bounding_poly.vertices[1].y,
-                ),
-                "({},{})".format(
-                    text.bounding_poly.vertices[2].x, text.bounding_poly.vertices[2].y,
-                ),
-                "({},{})".format(
-                    text.bounding_poly.vertices[3].x, text.bounding_poly.vertices[3].y,
-                ),
+                text.bounding_poly.vertices[0].x,
+                text.bounding_poly.vertices[1].x,
+                text.bounding_poly.vertices[2].x,
+                text.bounding_poly.vertices[3].x,
+                text.bounding_poly.vertices[0].y,
+                text.bounding_poly.vertices[1].y,
+                text.bounding_poly.vertices[2].y,
+                text.bounding_poly.vertices[3].y,
             ]
 
     if response.error.message:
