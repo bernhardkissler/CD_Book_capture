@@ -40,22 +40,4 @@ test_picture = "opnecvcdtest_einzeln_02.jpg"
 
 print(pytesseract.image_to_string(Image.open(test_picture), lang="deu",))
 
-
-# # Get bounding box estimates
-# print(pytesseract.image_to_boxes(Image.open(test_picture), lang="deu"))
-
-# # Get verbose data including boxes, confidences, line and page numbers
-# print(pytesseract.image_to_data(Image.open(test_picture), lang="deu"))
-
-# # Get information about orientation and script detection
-# print(pytesseract.image_to_osd(Image.open(test_picture), lang="deu"))
-
-# # Get a searchable PDF
-# pdf = pytesseract.image_to_pdf_or_hocr(test_picture, lang="deu", extension="pdf")
-# with open("test.pdf", "w+b") as f:
-#     f.write(pdf)  # pdf type is bytes by default
-
-# # Get HOCR output
-# hocr = pytesseract.image_to_pdf_or_hocr(test_picture, lang="deu", extension="hocr")
-
 print("done")

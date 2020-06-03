@@ -1,5 +1,6 @@
 import io
 import os
+import pandas as pd
 
 # Imports the Google Cloud client library
 from google.cloud import vision
@@ -22,15 +23,34 @@ def detect_text(path):
     texts = response.text_annotations
     print("Texts:")
 
-    for text in texts:
+    units = pd.DataFrame(
+        columns=["word", "upper_left", "upper_right", "bottom_right", "bottom_left",]
+    )
+
+    for i, text in enumerate(texts):
         print('\n"{}"'.format(text.description))
 
         vertices = [
             "({},{})".format(vertex.x, vertex.y)
             for vertex in text.bounding_poly.vertices
         ]
-
         print("bounds: {}".format(",".join(vertices)))
+        if i > 0:
+            units.loc[i] = [
+                text.description,
+                "({},{})".format(
+                    text.bounding_poly.vertices[0].x, text.bounding_poly.vertices[0].y,
+                ),
+                "({},{})".format(
+                    text.bounding_poly.vertices[1].x, text.bounding_poly.vertices[1].y,
+                ),
+                "({},{})".format(
+                    text.bounding_poly.vertices[2].x, text.bounding_poly.vertices[2].y,
+                ),
+                "({},{})".format(
+                    text.bounding_poly.vertices[3].x, text.bounding_poly.vertices[3].y,
+                ),
+            ]
 
     if response.error.message:
         raise Exception(
@@ -38,5 +58,8 @@ def detect_text(path):
             "https://cloud.google.com/apis/design/errors".format(response.error.message)
         )
 
+    return units
 
-detect_text("opnecvcdtest01.jpg")
+
+units = detect_text("opnecvcdtest01.jpg")
+units.to_csv("cds.csv", index=False)
